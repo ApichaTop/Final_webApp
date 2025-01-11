@@ -48,3 +48,8 @@ export default tseslint.config({
   },
 })
 ```
+## run backend
+```terminal 
+pip install fastapi uvicorn transformers torch
+```
+
