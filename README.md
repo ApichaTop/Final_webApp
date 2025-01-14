@@ -48,8 +48,31 @@ export default tseslint.config({
   },
 })
 ```
+## run frontend
+```terminal 
+yarn // first time
+yarn dev
+```
 ## run backend
 ```terminal 
-pip install fastapi uvicorn transformers torch
+cd backend
+```
+open python env
+
+for window
+```terminal 
+.\env\Scripts\activate
+```
+for macOs
+```terminal 
+source ./env/bin/activate
+```
+```terminal 
+pip install fastapi uvicorn transformers torch // only first time
+uvicorn main:app --reload
+```
+if uvicorn error use this instead
+```terminal
+python -m uvicorn main:app --reload
 ```
 
