@@ -30,7 +30,9 @@ function App() {
     return (
         <div className="w-screen h-screen bg-neutral-600 fixed top-0 left-0">
             <div className="bg-white justify-between flex py-4 px-4">
-                <button className="bg-black text-white p-2 rounded-lg">Depression Text Analysis</button>
+                <button className="bg-black text-white p-2 rounded-lg">
+                  <p className="font-serif">Depression Text Analysis</p>
+                  </button>
                 <button className="bg-black text-white p-2 rounded-lg">About us</button>
             </div>
             <div className="fixed bottom-8 left-[50%] -translate-x-1/2">
@@ -51,8 +53,8 @@ function App() {
                 {prediction && (
                     <div>
                         <p>Text: {inputText}</p>
-                        <p>Non-toxic: {prediction['non-toxic']}</p>
-                        <p>Toxic: {prediction['toxic']}</p>
+                        <p>Non-toxic: {prediction.Normal}</p>
+                        <p>Toxic: {prediction.Depressed}</p>
                     </div>
                 )}
             </div>
