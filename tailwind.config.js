@@ -14,12 +14,7 @@ export default {
         'depressed-light-blue' : '#638d96',
       },
       fontFamily: {
-        'lmroman' : ['lmroman10', 'serif'],
-        'lmroman-bold' : ['lmroman10-bold', 'serif'],
-        'lmroman-bold-italic' : ['lmroman10-bold-italic', 'serif'],
-        'lmroman-oblique' : ['lmroman10-oblique', 'serif'],
-        'lmroman-demi' : ['lmroman10-demi', 'serif'],
-        'lmroman-slant' : ['lmroman10-slant', 'serif'],
+        'Latin-Modern' : ['Latin-Modern', 'serif'],
       },
     },
   },

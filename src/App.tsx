@@ -42,11 +42,11 @@ function App() {
     return (
         <div className=" min-h-screen bg-white top-0 left-0">
             <div className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] flex flex-col justify-center items-center">
-                <p className="text-5xl font-lmroman font-demi my-6 ">Depression Text Analysis</p>
-                <div style={{fontFamily: 'lmroman'}}>Test Text for FONT</div>
+                <p className="text-5xl font-Latin-Modern my-6 ">Depression Text Analysis</p>
+                <div style={{fontFamily: 'Latin-Modern'}}>Test FONT</div>
                 <div className="mt-4 text-center text-white">
                     <div className='flex flex-row justify-start ml-5 mb-6'>
-                        <p className='mt-2 font-lmroman text-black'>Select Model</p>
+                        <p className='mt-2 font-Latin-Modern italic text-black'>Select Model</p>
                         <select
                             className="bg-gray-200 text-black p-2 rounded-md ml-5"
                             value={selectedModel}
@@ -60,7 +60,7 @@ function App() {
                 <div className="flex bg-gray-100 items-center py-2 px-4 rounded-full min-w-[800px] min-h-16">
 
                     <input
-                        className="min-w-[800px] outline-none bg-gray-100 font-lmroman"
+                        className="min-w-[800px] outline-none bg-gray-100 font-Latin-Modern"
                         placeholder="input here..."
                         value={inputText}
                         onChange={handleInputChange}
