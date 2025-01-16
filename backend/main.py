@@ -15,30 +15,34 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# โหลดโมเดลและ tokenizer
-model_name = "unitary/toxic-bert"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSequenceClassification.from_pretrained(model_name)
+depbert_model = AutoModelForSequenceClassification.from_pretrained("b4enq/DepBERT")
+deprorberta_model = AutoModelForSequenceClassification.from_pretrained("b4enq/DepRoBERTa")
+depbert_tokenizer = AutoTokenizer.from_pretrained("b4enq/DepBERT")
+deprorberta_tokenizer = AutoTokenizer.from_pretrained("b4enq/DepRoBERTa")
+labels = ["normal", "depressed"]
 
 class TextRequest(BaseModel):
     text: str
-
+    model: str 
 @app.post("/predict")
 async def predict(request: TextRequest):
     try:
-        inputs = tokenizer(request.text, return_tensors="pt", padding=True, truncation=True, max_length=512)
-        print(f"Tokenized Inputs: {inputs}")
+        if request.model == "DepBERT":
+            model = depbert_model
+            tokenizer = depbert_tokenizer
+        elif request.model == "DepRoBERTa":
+            model = deprorberta_model
+            tokenizer = deprorberta_tokenizer
+        else:
+            raise HTTPException(status_code=400, detail="Invalid model name")
 
+        inputs = tokenizer(request.text, return_tensors="pt")
         with torch.no_grad():
             outputs = model(**inputs)
             probabilities = F.softmax(outputs.logits, dim=-1)
-            print(f"Logits: {outputs.logits}")
-            print(f"Probabilities: {probabilities}")
-            print
-        
-        labels = ["toxic", "non-toxic"] # เรียง labels
+
         result = {labels[i]: float(probabilities[0][i]) for i in range(len(labels))}
-        return {"text": request.text, "prediction": result}
+        return {"text": request.text, "prediction": result,"model": request.model}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
