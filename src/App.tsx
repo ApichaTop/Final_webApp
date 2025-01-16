@@ -42,21 +42,21 @@ function App() {
     return (
         <div className=" min-h-screen bg-white top-0 left-0">
             <div className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] flex flex-col justify-center items-center">
-                <p className="text-5xl font-lmroman my-6 ">Depression Text Analysis</p>
-
-            <div className="mt-4 text-center text-white">
-                <div className='flex flex-row justify-start ml-5'>
-                    <p className='mt-2'>Select Model</p>
-                    <select
-                        className="bg-gray-200 text-black p-2 rounded-md ml-5"
-                        value={selectedModel}
-                        onChange={handleModelChange}
-                    >
-                        <option value="DepBERT">DepBERT</option>
-                        <option value="DepRoBERTa">DepRoBERTa</option>
-                    </select>
+                <p className="text-5xl font-lmroman font-demi my-6 ">Depression Text Analysis</p>
+                <div style={{fontFamily: 'lmroman'}}>Test Text for FONT</div>
+                <div className="mt-4 text-center text-white">
+                    <div className='flex flex-row justify-start ml-5 mb-6'>
+                        <p className='mt-2 font-lmroman text-black'>Select Model</p>
+                        <select
+                            className="bg-gray-200 text-black p-2 rounded-md ml-5"
+                            value={selectedModel}
+                            onChange={handleModelChange}
+                        >
+                            <option value="DepBERT">DepBERT</option>
+                            <option value="DepRoBERTa">DepRoBERTa</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
                 <div className="flex bg-gray-100 items-center py-2 px-4 rounded-full min-w-[800px] min-h-16">
 
                     <input
@@ -76,19 +76,26 @@ function App() {
                     {prediction && (
                         <div>
                             <p>Text: {inputText}</p>
-                            <p>Non-toxic: {prediction.Normal}</p>
-                            <p>Toxic: {prediction.Depressed}</p>
+                            <p>Non-toxic: {prediction.normal}</p>
+                            <p>Toxic: {prediction.depressed}</p>
                         </div>
                     )}
                 </div>
                 <div className="text-black">
                     {shapvalue && (
                         <div>
-                            <p>{shapvalue}</p>
-                        </div>
+                        <ul>
+                            {/* {shapvalue.map((value, index) => (
+                                <li key={index}>{value}</li> // Display each SHAP value
+                            ))} */}
+                            {tokens.map( (word) =>(
+                                <li >{word}</li>
+                            ))}
+                        </ul>
+                    </div>
                     )}
                 </div>
-        </div>
+            </div>
         </div>
     );
 }

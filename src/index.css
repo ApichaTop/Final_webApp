@@ -4,38 +4,37 @@
 
 @font-face {
     font-family: lmroman10;
-    font-weight: 400;
+    font-weight: normal;
     font-style: normal;
-    src: url(fonts/lmroman10-regular.otf);
-    font-named-instance: "Regular";
+    src: url(fonts/lmroman10-regular.otf) format('truetype');
 }
 @font-face {
-    font-family: lmroman10;
-    font-weight: 700;
-    font-style: bold;
-    src: url(fonts/lmroman10-bold.otf);
+    font-family: lmroman10-bold;
+    font-weight: bold;
+    font-style: normal;
+    src: url(fonts/lmroman10-bold.otf) format('truetype');
 }
 @font-face {
-    font-family: lmroman10;
-    font-weight: 700;
+    font-family: lmroman10-bold-italic;
+    font-weight: bold;
     font-style: italic;
-    src: url(fonts/lmroman10-bolditalic.otf);
+    src: url(fonts/lmroman10-bolditalic.otf) format('truetype');
 }
 @font-face {
-    font-family: lmroman10;
-    font-weight: 400;
+    font-family: lmroman10-oblique;
+    font-weight: normal;
     font-style: oblique;
-    src: url(fonts/lmromancaps10-oblique.otf);
+    src: url(fonts/lmromancaps10-oblique.otf) format('truetype');
 }
 @font-face {
-    font-family: lmroman10;
+    font-family: lmroman10-demi;
     font-weight: 500;
     font-style: normal;
-    src: url(fonts/lmromandemi10-regular.otf);
+    src: url(fonts/lmromandemi10-regular.otf) format('truetype');
 }
 @font-face {
-    font-family: lmroman10;
-    font-weight: 400;
+    font-family: lmroman10-slant;
+    font-weight: normal;
     font-style: normal;
-    src: url(fonts/lmromanslant10-regular.otf);
+    src: url(fonts/lmromanslant10-regular.otf) format('truetype');
 }
