@@ -4,6 +4,8 @@ import { FaArrowUp } from "react-icons/fa";
 function App() {
     const [inputText, setInputText] = useState('');
     const [prediction, setPrediction] = useState<{ [key: string]: number } | null>(null);
+    const [shapvalue, setShapvalue] = useState([]);
+    const [tokens, setTokens] = useState([]);
     const [selectedModel, setSelectedModel] = useState('DepBERT');
     // const [modelFromBackend, setModelFromBackend] = useState('');
 
@@ -29,6 +31,8 @@ function App() {
 
             const data = await response.json();
             setPrediction(data.prediction);
+            setShapvalue(data.shap);
+            setTokens(data.tokens);
             // setModelFromBackend(data.model);
         } catch (error) {
             console.error('Error:', error);
@@ -36,11 +40,10 @@ function App() {
     };
 
     return (
-        <div className="w-screen h-screen bg-neutral-600 fixed top-0 left-0">
-            <div className="bg-white justify-between flex py-4 px-4">
-                <button className="bg-black text-white p-2 rounded-lg">Depression Text Analysis</button>
-                <button className="bg-black text-white p-2 rounded-lg">About us</button>
-            </div>
+        <div className=" min-h-screen bg-white top-0 left-0">
+            <div className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] flex flex-col justify-center items-center">
+                <p className="text-5xl font-lmroman my-6 ">Depression Text Analysis</p>
+
             <div className="mt-4 text-center text-white">
                 <div className='flex flex-row justify-start ml-5'>
                     <p className='mt-2'>Select Model</p>
@@ -54,33 +57,41 @@ function App() {
                     </select>
                 </div>
             </div>
-            <div className="fixed bottom-8 left-[50%] -translate-x-1/2">
-                <input
-                    className="bg-white py-2 px-4 rounded-md outline-none min-w-[800px]"
-                    placeholder="input here..."
-                    value={inputText}
-                    onChange={handleInputChange}
-                />
-                <button
-                    className="bg-black absolute right-2 top-1 text-white rounded-full p-2"
-                    onClick={handleSubmit}
-                >
-                    <FaArrowUp />
-                </button>
-            </div>
-            <div className="mt-4 text-center text-white">
-                {prediction && (
-                    <div>
-                        <p>Model selected in frontend: {selectedModel}</p>  
-                        {/* <p>Model used by backend: {modelFromBackend}</p>   */}
-                        <p>Text: {inputText}</p>
-                        <p>Normal: {(prediction['normal'] * 100).toFixed(2)}%</p>
-                        <p>Depressed: {(prediction['depressed'] * 100).toFixed(2)}%</p>
-                    </div>
-                )}
-            </div>
+                <div className="flex bg-gray-100 items-center py-2 px-4 rounded-full min-w-[800px] min-h-16">
+
+                    <input
+                        className="min-w-[800px] outline-none bg-gray-100 font-lmroman"
+                        placeholder="input here..."
+                        value={inputText}
+                        onChange={handleInputChange}
+                    />
+                    <button
+                        className="bg-black top-1 text-white rounded-full p-2"
+                        onClick={handleSubmit}
+                    >
+                        <FaArrowUp />
+                    </button>
+                </div>
+                <div className="mt-4 text-center text-black">
+                    {prediction && (
+                        <div>
+                            <p>Text: {inputText}</p>
+                            <p>Non-toxic: {prediction.Normal}</p>
+                            <p>Toxic: {prediction.Depressed}</p>
+                        </div>
+                    )}
+                </div>
+                <div className="text-black">
+                    {shapvalue && (
+                        <div>
+                            <p>{shapvalue}</p>
+                        </div>
+                    )}
+                </div>
+        </div>
         </div>
     );
 }
 
 export default App;
+

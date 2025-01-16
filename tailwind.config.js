@@ -5,7 +5,18 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'whatyellow' : '#ffeb00',
+        'whatred' : '#d84040',
+        'whatwhite' : '#FFFDF0',
+        'depressed-dark-blue' : '#39546d',
+        'depressed-light-blue' : '#638d96',
+      },
+      fontFamily: {
+        'lmroman' : ['lmroman10', 'serif']
+      },
+    },
   },
   plugins: [],
 }
