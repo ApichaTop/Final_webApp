@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 from fastapi.middleware.cors import CORSMiddleware
 import torch
 import torch.nn.functional as F
+import shap
 
 app = FastAPI()
 
@@ -16,7 +17,7 @@ app.add_middleware(
 )
 
 # โหลดโมเดลและ tokenizer
-model_name = "unitary/toxic-bert"
+model_name = "b4enq/DepBERT"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
@@ -36,9 +37,17 @@ async def predict(request: TextRequest):
             print(f"Probabilities: {probabilities}")
             print
         
-        labels = ["toxic", "non-toxic"] # เรียง labels
+        labels = ["Normal", "Depressed"] # เรียง labels
         result = {labels[i]: float(probabilities[0][i]) for i in range(len(labels))}
-        return {"text": request.text, "prediction": result}
+        model_pipeline = pipeline('text-classification', model=model_name)
+        explainer = shap.Explainer(model_pipeline)
+        shap_res = explainer(request.text)
+        shap_value =[shap_res.values[0].tolist()]
+        print(type(shap_value), len(shap_value))
+        tokens = [shap_res.data]
+        print(type(tokens), len(tokens))
+        return {"text": request.text, "prediction": result, "shap": shap_value, "tokens" : tokens}
     
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # raise HTTPException(status_code=500, detail=str(e))
+        print(e);
