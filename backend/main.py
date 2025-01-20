@@ -47,6 +47,8 @@ async def predict(request: TextRequest):
         else:
             raise HTTPException(status_code=400, detail="Invalid model name")
 
+        # this section is a load of work for gpu or cpu
+        # , need some gc for clean thins up
         inputs = tokenizer(request.text, return_tensors="pt")
         with torch.no_grad():
             outputs = model(**inputs)
@@ -56,6 +58,9 @@ async def predict(request: TextRequest):
         
         result = {labels[i]: float(probabilities[0][i]) for i in range(len(labels))}
 
+        del inputs, outputs
+        torch.cuda_empty_cache() if torch.cuda.is_available() else torch.mps.empty_cache()
+
         model_pipeline = pipeline('text-classification', model=selected_name, tokenizer=selected_name)
         explainer = shap.Explainer(model_pipeline)
         shap_res = explainer([request.text]) # list, not only text
@@ -63,6 +68,9 @@ async def predict(request: TextRequest):
         shap_tokens = shap_res.data[0].tolist()
         print(type(shap_value), len(shap_value))
         print(type(shap_res.data[0]))
+
+        del explainer, shap_res, model_pipeline
+        torch.cuda_empty_cache() if torch.cuda.is_available() else torch.mps.empty_cache()
         return {
             "text": request.text,
             "prediction": result,
@@ -72,5 +80,5 @@ async def predict(request: TextRequest):
             }
     
     except Exception as e:
+        torch.cuda_empty_cache() if torch.cuda.is_available() else torch.mps.empty.cache()
         raise HTTPException(status_code=500, detail=str(e))
-        # print(e)
