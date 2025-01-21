@@ -1,4 +1,5 @@
 import React from "react";
+import Emoj from "./Emoj";
 
 interface Props{
     scrollRef: React.RefObject<HTMLParagraphElement>,
@@ -12,7 +13,8 @@ const ResCard: React.FC<Props> = ({ scrollRef, prediction, inputText, shapvalue,
 
     return (
             <div className="min-h-screen flex bg-gray-100 justify-center items-center">
-                <div ref={scrollRef} className="w-full max-w-md bg-white p-6 rounded shadow-md mt-6">
+                <div ref={scrollRef} className="w-1/2 h-full bg-white p-6 rounded shadow-md mt-6">
+                    <Emoj res={prediction}/>
                     {prediction && (
                         <div>
                             <p>Text: {inputText}</p>
@@ -26,8 +28,8 @@ const ResCard: React.FC<Props> = ({ scrollRef, prediction, inputText, shapvalue,
                                 {shapvalue.map((value, index) => (
                                     <li key={index}>{value}</li> // Display each SHAP value
                                 ))}
-                                {tokens.map((word) => (
-                                    <li >{word}</li>
+                                {tokens.map((word, index) => (
+                                    <li key={index}>{word}</li>
                                 ))}
                             </ul>
                         </div>
