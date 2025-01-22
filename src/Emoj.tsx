@@ -32,7 +32,7 @@ function Emoj({res} : Props){
                                 to bottom,
                                 #E16A54 0,
                                 #E16A54 ${fDep}%,
-                                #B1C29E ${fDep}%,
+                                #B1C29E ${fNorm}%,
                                 #B1C29E 100%)`:
                         `linear-gradient(
                                 to bottom,
