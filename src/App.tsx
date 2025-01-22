@@ -5,9 +5,10 @@ function App() {
     const [inputText, setInputText] = useState('');
     const [prediction, setPrediction] = useState<{ [key: string]: number } | null>(null);
     const [shapvalue, setShapvalue] = useState([]);
-    const [tokens, setTokens] = useState([]);
+    const [tokens, setTokens] = useState<string[]>([]);
     const [selectedModel, setSelectedModel] = useState('DepBERT');
     // const [modelFromBackend, setModelFromBackend] = useState('');
+    const [popupVisible, setPopupVisible] = useState(false);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(event.target.value);
@@ -16,6 +17,10 @@ function App() {
     const handleModelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedModel(event.target.value);
     };
+
+    const togglePopup = () => {
+        setPopupVisible(!popupVisible);
+      };
 
     const handleSubmit = async () => {
         try {
@@ -41,9 +46,16 @@ function App() {
 
     return (
         <div className=" min-h-screen bg-white top-0 left-0">
+            <div className='mt-4 mr-5 flex flex-row justify-end'>
+                <button 
+                    className="bg-black top-1 text-white rounded-full p-2"
+                    onClick={togglePopup}
+                >
+                    About Us
+                </button>
+            </div>
             <div className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] flex flex-col justify-center items-center">
                 <p className="text-5xl font-Latin-Modern my-6 ">Depression Text Analysis</p>
-                <div style={{fontFamily: 'Latin-Modern'}}>Test FONT</div>
                 <div className="mt-4 text-center text-white">
                     <div className='flex flex-row justify-start ml-5 mb-6'>
                         <p className='mt-2 font-Latin-Modern italic text-black'>Select Model</p>
@@ -76,25 +88,49 @@ function App() {
                     {prediction && (
                         <div>
                             <p>Text: {inputText}</p>
-                            <p>Non-toxic: {prediction.normal}</p>
-                            <p>Toxic: {prediction.depressed}</p>
+                            <p>Normal: {(prediction.normal*100).toFixed(2)}%</p>
+                            <p>Depressed: {(prediction.depressed * 100).toFixed(2)}%</p>
                         </div>
                     )}
                 </div>
                 <div className="text-black">
-                    {shapvalue && (
-                        <div>
-                        <ul>
-                            {/* {shapvalue.map((value, index) => (
-                                <li key={index}>{value}</li> // Display each SHAP value
-                            ))} */}
-                            {tokens.map( (word) =>(
-                                <li >{word}</li>
-                            ))}
-                        </ul>
+                {shapvalue && tokens && (
+                    <div className="flex flex-wrap justify-center mt-4">
+                        {tokens
+                            .filter((word) => word.trim() !== '') 
+                            .map((word, index) => {
+                                const intensity = Math.min(Math.abs(shapvalue[0][index][0]) * 3, 1); 
+                                return (
+                                    <div
+                                        key={index}
+                                        className="m-2 px-3 py-1 rounded-lg border border-gray-300"
+                                        style={{
+                                            backgroundColor: `rgba(255, 0, 0, ${intensity})`,
+                                        }}
+                                    >
+                                        {word}
+                                    </div>
+                                );
+                            })}
                     </div>
-                    )}
+                )}
                 </div>
+                {popupVisible && (
+                <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50">
+                    <div className="bg-white rounded-lg p-6 max-w-md shadow-lg">
+                        <h2 className="text-xl font-bold mb-4">About This Project</h2>
+                        <p className="text-gray-700">
+                            อธิบาย maybe วิธีใช้งานคร่าวๆรายละเอียด
+                        </p>
+                        <button
+                        onClick={togglePopup}
+                        className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                        Close
+                        </button>
+                    </div>
+                </div>
+                )}
             </div>
         </div>
     );
