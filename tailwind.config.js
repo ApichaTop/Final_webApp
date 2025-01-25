@@ -15,6 +15,7 @@ export default {
       },
       fontFamily: {
         'Latin-Modern' : ['Latin-Modern', 'serif'],
+        'IBM-Plex-Mono' : ['"IBM Plex Mono"', 'serif']
       },
     },
   },
