@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import torch
 import torch.nn.functional as F
 import shap
+import gc
 
 app = FastAPI()
 
@@ -59,7 +60,8 @@ async def predict(request: TextRequest):
         result = {labels[i]: float(probabilities[0][i]) for i in range(len(labels))}
 
         del inputs, outputs
-        torch.cuda_empty_cache() if torch.cuda.is_available() else torch.mps.empty_cache()
+        torch.cuda_empty_cache() if torch.cuda.is_available() else None
+        gc.collect()
 
         model_pipeline = pipeline('text-classification', model=selected_name, tokenizer=selected_name)
         explainer = shap.Explainer(model_pipeline)
@@ -70,7 +72,8 @@ async def predict(request: TextRequest):
         print(type(shap_res.data[0]))
 
         del explainer, shap_res, model_pipeline
-        torch.cuda_empty_cache() if torch.cuda.is_available() else torch.mps.empty_cache()
+        torch.cuda_empty_cache() if torch.cuda.is_available() else None
+        gc.collect()
         return {
             "text": request.text,
             "prediction": result,
@@ -80,5 +83,6 @@ async def predict(request: TextRequest):
             }
     
     except Exception as e:
-        torch.cuda_empty_cache() if torch.cuda.is_available() else torch.mps.empty.cache()
+        torch.cuda_empty_cache() if torch.cuda.is_available() else None
+        gc.collect()
         raise HTTPException(status_code=500, detail=str(e))
