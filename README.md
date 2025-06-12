@@ -48,6 +48,10 @@ export default tseslint.config({
   },
 })
 ```
+## instal yarn
+```sh
+npm install --global yarn
+```
 ## run frontend
 ```terminal 
 yarn // first time
